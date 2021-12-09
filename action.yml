@@ -1,0 +1,46 @@
+name: Tool Cache
+description: Implementation of Tool Cache in composite GitHub Actions
+branding:
+  icon: tool
+  color: purple
+inputs:
+  folder_name:
+    description: Folder name of the software inside runner temp
+    required: true
+  cache-hit:
+    description: Boolean value if cache was found
+    required: false
+    default: false
+    
+runs:
+  using: composite
+  steps:
+    - name: Create a folder inside tool cache (Unix-like)
+      if: runner.os == 'Linux' || runner.os == 'macOS'
+      shell: bash
+      run: mkdir "$RUNNER_TOOL_CACHE/${{ inputs.folder_name }}"
+      
+    - name: Move the contents of the software folder to the tool cache folder (Unix-like)
+      if: runner.os == 'Linux' || runner.os == 'macOS'
+      shell: bash
+      run: mv -r "$RUNNER_TEMP/${{ inputs.folder_name }}/*" "$RUNNER_TOOL_CACHE/${{ inputs.folder_name }}/"
+      
+    - name: Add tool cache folder to path (Unix-like)
+      if: runner.os == 'Linux' || runner.os == 'macOS'
+      shell: bash
+      run: echo "$RUNNER_TOOL_CACHE/${{ inputs.folder_name }}" >> $GITHUB_PATH
+      
+    - name: Create a folder inside tool cache (Windows)
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: New-Item "$env:RUNNER_TOOL_CACHE\${{ inputs.folder_name }}" -ItemType Directory
+      
+    - name: Move the contents of the software folder to the tool cache folder (Windows)
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: Move-Item "$env:RUNNER_TEMP\${{ inputs.folder_name }}\*" "$env:RUNNER_TOOL_CACHE\${{ inputs.folder_name }}\"
+      
+    - name: Add tool cache folder to path (Windows)
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: Write-Output "$env:RUNNER_TOOL_CACHE\${{ inputs.folder_name }}" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
