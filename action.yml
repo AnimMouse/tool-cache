@@ -23,7 +23,7 @@ runs:
     - name: Move the contents of the software folder to the tool cache folder (Unix-like)
       if: runner.os == 'Linux' || runner.os == 'macOS'
       shell: bash
-      run: mv -r "$RUNNER_TEMP/${{ inputs.folder_name }}/*" "$RUNNER_TOOL_CACHE/${{ inputs.folder_name }}/"
+      run: mv "$RUNNER_TEMP/${{ inputs.folder_name }}/*" "$RUNNER_TOOL_CACHE/${{ inputs.folder_name }}/"
       
     - name: Add tool cache folder to path (Unix-like)
       if: runner.os == 'Linux' || runner.os == 'macOS'
