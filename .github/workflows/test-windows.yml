@@ -1,0 +1,29 @@
+name: Test Tool Cache on Windows
+on:
+  push:
+    paths:
+      - action.yml
+      - .github/workflows/test-windows.yml
+      
+jobs:
+  test-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Windows Hello World binary
+        uses: actions/checkout@v2
+        with:
+          ref: hello-world-windows
+          persist-credentials: false
+          
+      - name: Move the binary to runner temp folder
+        run: |
+          New-Item $env:RUNNER_TEMP\hello-world-program\ -ItemType Directory
+          Move-Item hh2.golden.exe $env:RUNNER_TEMP\hello-world-program\
+          
+      - name: Install the Windows Hello World binary using tool-cache
+        uses: AnimMouse/tool-cache@main
+        with:
+          folder_name: hello-world-program
+          
+      - name: Test if the Windows Hello World binary is installed by tool-cache
+        run: hh2.golden

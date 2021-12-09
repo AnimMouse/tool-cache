@@ -1,7 +1,7 @@
 name: Tool Cache
 description: Implementation of Tool Cache in composite GitHub Actions
 branding:
-  icon: tool
+  icon: plus
   color: purple
 inputs:
   folder_name:
@@ -18,7 +18,7 @@ runs:
     - name: Create a folder inside tool cache (Unix-like)
       if: runner.os == 'Linux' || runner.os == 'macOS'
       shell: bash
-      run: mkdir "$RUNNER_TOOL_CACHE/${{ inputs.folder_name }}"
+      run: mkdir "$RUNNER_TOOL_CACHE/${{ inputs.folder_name }}/"
       
     - name: Move the contents of the software folder to the tool cache folder (Unix-like)
       if: runner.os == 'Linux' || runner.os == 'macOS'
@@ -33,7 +33,7 @@ runs:
     - name: Create a folder inside tool cache (Windows)
       if: runner.os == 'Windows'
       shell: pwsh
-      run: New-Item "$env:RUNNER_TOOL_CACHE\${{ inputs.folder_name }}" -ItemType Directory
+      run: New-Item "$env:RUNNER_TOOL_CACHE\${{ inputs.folder_name }}\" -ItemType Directory
       
     - name: Move the contents of the software folder to the tool cache folder (Windows)
       if: runner.os == 'Windows'
