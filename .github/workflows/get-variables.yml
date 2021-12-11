@@ -1,9 +1,6 @@
 name: Get Tool Cache Variables
-on:
-  push:
-    paths:
-      - .github/workflows/get-variables.yml
-      
+on: workflow_dispatch
+
 jobs:
   get-variables:
     runs-on: ${{ matrix.os }}
@@ -12,13 +9,21 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         
     steps:
-      - name: Get Tool Cache Variable
+      - name: Get Tool Cache variable using context
         run: echo ${{ runner.tool_cache }}
         
-      - name: Get Path Variable Unix-like
+      - name: Get Tool Cache variable using environment variable on bash
+        shell: bash
+        run: echo $RUNNER_TOOL_CACHE
+        
+      - name: Get Tool Cache variable using environment variable on Windows
+        if: runner.os == 'Windows'
+        run: $env:RUNNER_TOOL_CACHE
+        
+      - name: Get PATH variable on bash
         shell: bash
         run: echo $PATH
         
-      - name: Get Path Variable Windows
+      - name: Get PATH Variable on Windows
         if: runner.os == 'Windows'
-        run: $Env:Path
+        run: $env:PATH

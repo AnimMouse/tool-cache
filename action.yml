@@ -18,12 +18,12 @@ runs:
     - name: Create a folder inside tool cache (Unix-like)
       if: runner.os == 'Linux' || runner.os == 'macOS'
       shell: bash
-      run: mkdir "$RUNNER_TOOL_CACHE/hello-world-program/"
+      run: mkdir "$RUNNER_TOOL_CACHE/${{ inputs.folder_name }}/"
       
     - name: Move the contents of the software folder to the tool cache folder (Unix-like)
       if: runner.os == 'Linux' || runner.os == 'macOS'
       shell: bash
-      run: mv "$RUNNER_TEMP/hello-world-program/"* "$RUNNER_TOOL_CACHE/hello-world-program/"
+      run: mv "$RUNNER_TEMP/${{ inputs.folder_name }}/"* "$RUNNER_TOOL_CACHE/${{ inputs.folder_name }}/"
       
     - name: Add tool cache folder to path (Unix-like)
       if: runner.os == 'Linux' || runner.os == 'macOS'
