@@ -1,11 +1,33 @@
-name: Test Tool Cache on Windows
+name: Test Tool Cache
 on:
   push:
     paths:
       - action.yml
-      - .github/workflows/test-windows.yml
+      - .github/workflows/test.yml
       
 jobs:
+  test-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Linux Hello World binary
+        uses: actions/checkout@v2
+        with:
+          ref: hello-world-linux
+          persist-credentials: false
+          
+      - name: Move the binary to runner temp folder
+        run: |
+          mkdir $RUNNER_TEMP/hello-world-program/
+          mv hello $RUNNER_TEMP/hello-world-program/
+          
+      - name: Install the Linux Hello World binary using tool-cache
+        uses: AnimMouse/tool-cache@main
+        with:
+          folder_name: hello-world-program
+          
+      - name: Test if the Linux Hello World binary is installed by tool-cache
+        run: hello
+        
   test-windows:
     runs-on: windows-latest
     steps:
