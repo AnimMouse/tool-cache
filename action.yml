@@ -15,32 +15,32 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Create a folder inside tool cache (Unix-like)
+    - name: Install software to tool cache (Unix-like)
+      if: (runner.os == 'Linux' || runner.os == 'macOS') && inputs.cache-hit != 'true'
+      shell: bash
+      env:
+        folder_name: ${{ inputs.folder_name }}
+      run: $GITHUB_ACTION_PATH/scripts/Unix-like.sh
+      
+    - name: Add software tool cache folder to path (Unix-like)
       if: runner.os == 'Linux' || runner.os == 'macOS'
       shell: bash
-      run: mkdir "$RUNNER_TOOL_CACHE/${{ inputs.folder_name }}/"
+      run: |
+        echo ::group::Adding tool cache to path
+        echo "$RUNNER_TOOL_CACHE/${{ inputs.folder_name }}" >> $GITHUB_PATH
+        echo ::endgroup::
+        
+    - name: Install software to tool cache (Windows)
+      if: runner.os == 'Windows' && inputs.cache-hit != 'true'
+      shell: pwsh
+      env:
+        folder_name: ${{ inputs.folder_name }}
+      run: '& $env:GITHUB_ACTION_PATH\scripts\Windows.ps1'
       
-    - name: Move the contents of the software folder to the tool cache folder (Unix-like)
-      if: runner.os == 'Linux' || runner.os == 'macOS'
-      shell: bash
-      run: mv "$RUNNER_TEMP/${{ inputs.folder_name }}/"* "$RUNNER_TOOL_CACHE/${{ inputs.folder_name }}/"
-      
-    - name: Add tool cache folder to path (Unix-like)
-      if: runner.os == 'Linux' || runner.os == 'macOS'
-      shell: bash
-      run: echo "$RUNNER_TOOL_CACHE/${{ inputs.folder_name }}" >> $GITHUB_PATH
-      
-    - name: Create a folder inside tool cache (Windows)
+    - name: Add software tool cache folder to path (Windows)
       if: runner.os == 'Windows'
       shell: pwsh
-      run: New-Item "$env:RUNNER_TOOL_CACHE\${{ inputs.folder_name }}\" -ItemType Directory
-      
-    - name: Move the contents of the software folder to the tool cache folder (Windows)
-      if: runner.os == 'Windows'
-      shell: pwsh
-      run: Move-Item "$env:RUNNER_TEMP\${{ inputs.folder_name }}\*" "$env:RUNNER_TOOL_CACHE\${{ inputs.folder_name }}\"
-      
-    - name: Add tool cache folder to path (Windows)
-      if: runner.os == 'Windows'
-      shell: pwsh
-      run: Write-Output "$env:RUNNER_TOOL_CACHE\${{ inputs.folder_name }}" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      run: |
+        Write-Host "::group::Adding tool cache to path"
+        Add-Content $env:GITHUB_PATH "$env:RUNNER_TOOL_CACHE\${{ inputs.folder_name }}"
+        Write-Host "::endgroup::"
