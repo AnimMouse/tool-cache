@@ -10,7 +10,6 @@ inputs:
   cache-hit:
     description: Boolean value if cache was found
     required: false
-    default: false
     
 runs:
   using: composite
@@ -20,27 +19,25 @@ runs:
       shell: bash
       env:
         folder_name: ${{ inputs.folder_name }}
-      run: $GITHUB_ACTION_PATH/scripts/Unix-like.sh
+      run: $GITHUB_ACTION_PATH/scripts/install/Unix-like.sh
       
     - name: Add software tool cache folder to path (Unix-like)
       if: runner.os == 'Linux' || runner.os == 'macOS'
       shell: bash
-      run: |
-        echo ::group::Adding tool cache to path
-        echo "$RUNNER_TOOL_CACHE/${{ inputs.folder_name }}" >> $GITHUB_PATH
-        echo ::endgroup::
-        
+      env:
+        folder_name: ${{ inputs.folder_name }}
+      run: $GITHUB_ACTION_PATH/scripts/add-to-path/Unix-like.sh
+      
     - name: Install software to tool cache (Windows)
       if: runner.os == 'Windows' && inputs.cache-hit != 'true'
       shell: pwsh
       env:
         folder_name: ${{ inputs.folder_name }}
-      run: '& $env:GITHUB_ACTION_PATH\scripts\Windows.ps1'
+      run: '& $env:GITHUB_ACTION_PATH\scripts\install\Windows.ps1'
       
     - name: Add software tool cache folder to path (Windows)
       if: runner.os == 'Windows'
       shell: pwsh
-      run: |
-        Write-Host "::group::Adding tool cache to path"
-        Add-Content $env:GITHUB_PATH "$env:RUNNER_TOOL_CACHE\${{ inputs.folder_name }}"
-        Write-Host "::endgroup::"
+      env:
+        folder_name: ${{ inputs.folder_name }}
+      run: '& $env:GITHUB_ACTION_PATH\scripts\add-to-path\Windows.ps1'

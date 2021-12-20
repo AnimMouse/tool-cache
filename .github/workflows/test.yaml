@@ -2,9 +2,9 @@ name: Test Tool Cache
 on:
   push:
     paths:
-      - action.yml
+      - action.yaml
       - scripts/**
-      - .github/workflows/test.yml
+      - .github/workflows/test.yaml
       
 jobs:
   test-linux:
