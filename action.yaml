@@ -1,7 +1,7 @@
 name: Tool Cache
 description: Implementation of Tool Cache in composite GitHub Actions
 branding:
-  icon: plus
+  icon: package
   color: purple
 inputs:
   folder_name:

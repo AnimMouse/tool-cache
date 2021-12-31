@@ -1,3 +1,3 @@
-Write-Host ::group::Adding tool cache to path
+Write-Host ::group::Adding $env:folder_name tool cache folder to path
 Add-Content $env:GITHUB_PATH $env:RUNNER_TOOL_CACHE\$env:folder_name
 Write-Host ::endgroup::

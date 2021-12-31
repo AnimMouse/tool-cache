@@ -1,4 +1,4 @@
 #!/bin/sh
-echo ::group::Adding tool cache to path
+echo ::group::Adding $folder_name tool cache folder to path
 echo $RUNNER_TOOL_CACHE/$folder_name >> $GITHUB_PATH
 echo ::endgroup::
