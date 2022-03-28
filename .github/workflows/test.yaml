@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Linux Hello World binary
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: hello-world-linux
           persist-credentials: false
@@ -33,7 +33,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout Windows Hello World binary
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: hello-world-windows
           persist-credentials: false
