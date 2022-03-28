@@ -32,6 +32,7 @@ You can also check actions that uses this tool cache.
 1. [AnimMouse/setup-rclone](https://github.com/AnimMouse/setup-rclone)
 2. [AnimMouse/setup-cloudflared](https://github.com/AnimMouse/setup-cloudflared)
 3. [AnimMouse/setup-yt-dlp](https://github.com/AnimMouse/setup-yt-dlp)
+4. [AnimMouse/setup-restic](https://github.com/AnimMouse/setup-restic)
 
 ### Similar actions
 1. [supplypike/setup-bin](https://github.com/supplypike/setup-bin)

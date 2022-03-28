@@ -17,27 +17,27 @@ runs:
     - name: Install software to tool cache (Unix-like)
       if: (runner.os == 'Linux' || runner.os == 'macOS') && inputs.cache-hit != 'true'
       shell: bash
+      run: $GITHUB_ACTION_PATH/scripts/install/Unix-like.sh
       env:
         folder_name: ${{ inputs.folder_name }}
-      run: $GITHUB_ACTION_PATH/scripts/install/Unix-like.sh
-      
+        
     - name: Add software tool cache folder to path (Unix-like)
       if: runner.os == 'Linux' || runner.os == 'macOS'
       shell: bash
+      run: $GITHUB_ACTION_PATH/scripts/add-to-path/Unix-like.sh
       env:
         folder_name: ${{ inputs.folder_name }}
-      run: $GITHUB_ACTION_PATH/scripts/add-to-path/Unix-like.sh
-      
+        
     - name: Install software to tool cache (Windows)
       if: runner.os == 'Windows' && inputs.cache-hit != 'true'
       shell: pwsh
+      run: '& $env:GITHUB_ACTION_PATH\scripts\install\Windows.ps1'
       env:
         folder_name: ${{ inputs.folder_name }}
-      run: '& $env:GITHUB_ACTION_PATH\scripts\install\Windows.ps1'
-      
+        
     - name: Add software tool cache folder to path (Windows)
       if: runner.os == 'Windows'
       shell: pwsh
+      run: '& $env:GITHUB_ACTION_PATH\scripts\add-to-path\Windows.ps1'
       env:
         folder_name: ${{ inputs.folder_name }}
-      run: '& $env:GITHUB_ACTION_PATH\scripts\add-to-path\Windows.ps1'
