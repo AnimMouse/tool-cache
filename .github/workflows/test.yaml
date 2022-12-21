@@ -7,26 +7,39 @@ on:
       - .github/workflows/test.yaml
       
 jobs:
-  test-linux:
-    runs-on: ubuntu-latest
+  test-unix-like:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        
     steps:
       - name: Checkout Linux Hello World binary
+        if: matrix.os == 'ubuntu-latest'
         uses: actions/checkout@v3
         with:
           ref: hello-world-linux
           persist-credentials: false
           
+      - name: Checkout macOS Hello World binary
+        if: matrix.os == 'macos-latest'
+        uses: actions/checkout@v3
+        with:
+          ref: hello-world-macos
+          persist-credentials: false
+          
       - name: Move the binary to runner temp folder
         run: |
-          mkdir $RUNNER_TEMP/hello-world-program/
-          mv hello $RUNNER_TEMP/hello-world-program/
+          mkdir $RUNNER_TEMP/hello-world-program
+          mv hello $RUNNER_TEMP/hello-world-program
           
-      - name: Install the Linux Hello World binary using tool-cache
+      - name: Install the Hello World binary using tool-cache
         uses: AnimMouse/tool-cache@main
         with:
           folder_name: hello-world-program
           
-      - name: Test if the Linux Hello World binary is installed by tool-cache
+      - name: Test if the Hello World binary is installed by tool-cache
         run: hello
         
   test-windows:
@@ -40,8 +53,8 @@ jobs:
           
       - name: Move the binary to runner temp folder
         run: |
-          New-Item $env:RUNNER_TEMP\hello-world-program\ -ItemType Directory
-          Move-Item hh2.golden.exe $env:RUNNER_TEMP\hello-world-program\
+          New-Item $env:RUNNER_TEMP\hello-world-program -ItemType Directory
+          Move-Item hh2.golden.exe $env:RUNNER_TEMP\hello-world-program
           
       - name: Install the Windows Hello World binary using tool-cache
         uses: AnimMouse/tool-cache@main
