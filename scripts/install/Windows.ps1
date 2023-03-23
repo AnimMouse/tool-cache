@@ -15,7 +15,7 @@ Write-Host ::group::Installing $env:folder_name to tool cache
 #
 $cachePath = "$env:RUNNER_TOOL_CACHE\$env:folder_name"
 if(Test-Path $cachePath) {
-  rm -f $cachePath
+  rm $cachePath
 }
 
 New-Item $cachePath -ItemType Directory -Force
