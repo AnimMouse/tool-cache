@@ -35,6 +35,8 @@ You can also check actions that uses this tool cache.
 4. [AnimMouse/setup-restic](https://github.com/AnimMouse/setup-restic)
 5. [AnimMouse/setup-youtubeuploader](https://github.com/AnimMouse/setup-youtubeuploader)
 6. [AnimMouse/setup-appimage](https://github.com/AnimMouse/setup-appimage)
+7. [AnimMouse/setup-ffmpeg](https://github.com/AnimMouse/setup-ffmpeg)
+8. [AnimMouse/setup-age](https://github.com/AnimMouse/setup-age)
 
 ### Similar actions
 1. [supplypike/setup-bin](https://github.com/supplypike/setup-bin)
