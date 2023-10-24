@@ -13,23 +13,34 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
+        cache: [cache, no-cache]
+        cache-hit: [cache-hit, no-cache-hit]
         
     steps:
+      - name: Restore Hello World cache
+        if: matrix.cache == 'cache' && matrix.cache-hit == 'cache-hit'
+        id: restore-cache
+        uses: actions/cache/restore@v3
+        with:
+          path: ${{ runner.tool_cache }}/hello-world-program
+          key: cache-hit-hello-world-program
+          
       - name: Checkout Linux Hello World binary
-        if: matrix.os == 'ubuntu-latest'
-        uses: actions/checkout@v3
+        if: matrix.os == 'ubuntu-latest' && steps.restore-cache.outputs.cache-hit != true
+        uses: actions/checkout@v4
         with:
           ref: hello-world-linux
           persist-credentials: false
           
       - name: Checkout macOS Hello World binary
-        if: matrix.os == 'macos-latest'
-        uses: actions/checkout@v3
+        if: matrix.os == 'macos-latest' && steps.restore-cache.outputs.cache-hit != true
+        uses: actions/checkout@v4
         with:
           ref: hello-world-macos
           persist-credentials: false
           
       - name: Move the binary to runner temp folder
+        if: steps.restore-cache.outputs.cache-hit != true
         run: |
           mkdir $RUNNER_TEMP/hello-world-program
           mv hello $RUNNER_TEMP/hello-world-program
@@ -38,10 +49,18 @@ jobs:
         uses: AnimMouse/tool-cache@main
         with:
           folder_name: hello-world-program
+          cache_hit: ${{ steps.restore-cache.outputs.cache-hit }}
           
       - name: Test if the Hello World binary is installed by tool-cache
         run: hello
         
+      - name: Save Hello World cache
+        if: matrix.cache == 'cache'
+        uses: actions/cache/save@v3
+        with:
+          path: ${{ runner.tool_cache }}/hello-world-program
+          key: ${{ matrix.cache-hit }}-hello-world-program
+          
   test-windows:
     runs-on: windows-latest
     steps:
