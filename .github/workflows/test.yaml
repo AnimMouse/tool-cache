@@ -58,7 +58,7 @@ jobs:
         run: hello
         
       - name: Save Hello World cache
-        if: matrix.cache == 'cache'
+        if: matrix.cache == 'cache' && ! steps.restore-cache.outputs.cache-hit
         uses: actions/cache/save@v3
         with:
           path: ${{ runner.tool_cache }}/hello-world-program
@@ -107,7 +107,7 @@ jobs:
         run: hh2.golden
         
       - name: Save Hello World cache
-        if: matrix.cache == 'cache'
+        if: matrix.cache == 'cache' && ! steps.restore-cache.outputs.cache-hit
         uses: actions/cache/save@v3
         with:
           path: ${{ runner.tool_cache }}/hello-world-program

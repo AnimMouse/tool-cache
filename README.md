@@ -40,3 +40,4 @@ You can also check actions that uses this tool cache.
 
 ### Similar actions
 1. [supplypike/setup-bin](https://github.com/supplypike/setup-bin)
+2. [pbrisbin/setup-tool-action](https://github.com/pbrisbin/setup-tool-action)
