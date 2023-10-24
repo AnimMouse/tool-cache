@@ -43,7 +43,7 @@ jobs:
           persist-credentials: false
           
       - name: Move the binary to runner temp folder
-        if: ! steps.restore-cache.outputs.cache-hit
+        if: '! steps.restore-cache.outputs.cache-hit'
         run: |
           mkdir $RUNNER_TEMP/hello-world-program
           mv hello $RUNNER_TEMP/hello-world-program
