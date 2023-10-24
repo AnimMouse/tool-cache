@@ -29,21 +29,21 @@ jobs:
           key: cache-hit-hello-world-program
           
       - name: Checkout Linux Hello World binary
-        if: matrix.os == 'ubuntu-latest' && steps.restore-cache.outputs.cache-hit != 'true'
+        if: matrix.os == 'ubuntu-latest' && ! steps.restore-cache.outputs.cache-hit
         uses: actions/checkout@v4
         with:
           ref: hello-world-linux
           persist-credentials: false
           
       - name: Checkout macOS Hello World binary
-        if: matrix.os == 'macos-latest' && steps.restore-cache.outputs.cache-hit != 'true'
+        if: matrix.os == 'macos-latest' && ! steps.restore-cache.outputs.cache-hit
         uses: actions/checkout@v4
         with:
           ref: hello-world-macos
           persist-credentials: false
           
       - name: Move the binary to runner temp folder
-        if: steps.restore-cache.outputs.cache-hit != 'true'
+        if: ! steps.restore-cache.outputs.cache-hit
         run: |
           mkdir $RUNNER_TEMP/hello-world-program
           mv hello $RUNNER_TEMP/hello-world-program
