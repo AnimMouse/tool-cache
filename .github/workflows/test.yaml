@@ -15,7 +15,10 @@ jobs:
         os: [ubuntu-latest, macos-latest]
         cache: [cache, no-cache]
         cache-hit: [cache-hit, no-cache-hit]
-        
+        exclude:
+          - cache: no-cache
+            cache-hit: cache-hit
+            
     steps:
       - name: Restore Hello World cache
         if: matrix.cache == 'cache' && matrix.cache-hit == 'cache-hit'
