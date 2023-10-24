@@ -26,7 +26,7 @@ jobs:
         uses: actions/cache/restore@v3
         with:
           path: ${{ runner.tool_cache }}/hello-world-program
-          key: cache-hit-hello-world-program
+          key: ${{ runner.os }}-cache-hit-hello-world-program
           
       - name: Checkout Linux Hello World binary
         if: matrix.os == 'ubuntu-latest' && ! steps.restore-cache.outputs.cache-hit
@@ -62,18 +62,37 @@ jobs:
         uses: actions/cache/save@v3
         with:
           path: ${{ runner.tool_cache }}/hello-world-program
-          key: ${{ matrix.cache-hit }}-hello-world-program
+          key: ${{ runner.os }}-${{ matrix.cache-hit }}-hello-world-program
           
   test-windows:
     runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        cache: [cache, no-cache]
+        cache-hit: [cache-hit, no-cache-hit]
+        exclude:
+          - cache: no-cache
+            cache-hit: cache-hit
+            
     steps:
+      - name: Restore Hello World cache
+        if: matrix.cache == 'cache' && matrix.cache-hit == 'cache-hit'
+        id: restore-cache
+        uses: actions/cache/restore@v3
+        with:
+          path: ${{ runner.tool_cache }}/hello-world-program
+          key: ${{ runner.os }}-cache-hit-hello-world-program
+          
       - name: Checkout Windows Hello World binary
-        uses: actions/checkout@v3
+        if: '! steps.restore-cache.outputs.cache-hit'
+        uses: actions/checkout@v4
         with:
           ref: hello-world-windows
           persist-credentials: false
           
       - name: Move the binary to runner temp folder
+        if: '! steps.restore-cache.outputs.cache-hit'
         run: |
           New-Item $env:RUNNER_TEMP\hello-world-program -ItemType Directory
           Move-Item hh2.golden.exe $env:RUNNER_TEMP\hello-world-program
@@ -82,6 +101,14 @@ jobs:
         uses: AnimMouse/tool-cache@main
         with:
           folder_name: hello-world-program
+          cache_hit: ${{ steps.restore-cache.outputs.cache-hit }}
           
       - name: Test if the Windows Hello World binary is installed by tool-cache
         run: hh2.golden
+        
+      - name: Save Hello World cache
+        if: matrix.cache == 'cache'
+        uses: actions/cache/save@v3
+        with:
+          path: ${{ runner.tool_cache }}/hello-world-program
+          key: ${{ runner.os }}-${{ matrix.cache-hit }}-hello-world-program
