@@ -15,7 +15,7 @@ runs:
   using: composite
   steps:
     - name: Install software to tool cache (Unix-like)
-      if: (runner.os == 'Linux' || runner.os == 'macOS') && inputs.cache_hit == false
+      if: (runner.os == 'Linux' || runner.os == 'macOS') && inputs.cache_hit != 'true'
       shell: bash
       run: $GITHUB_ACTION_PATH/scripts/install/Unix-like.sh
       env:
@@ -29,7 +29,7 @@ runs:
         folder_name: ${{ inputs.folder_name }}
         
     - name: Install software to tool cache (Windows)
-      if: runner.os == 'Windows' && inputs.cache_hit == false
+      if: runner.os == 'Windows' && inputs.cache_hit != 'true'
       shell: pwsh
       run: '& $env:GITHUB_ACTION_PATH\scripts\install\Windows.ps1'
       env:
