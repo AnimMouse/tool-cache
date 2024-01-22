@@ -39,7 +39,7 @@ steps:
   - name: Install the Hello World binary using tool-cache
     uses: AnimMouse/tool-cache@v1
     with:
-      folder_name: hello-world-program
+      folder_name: hello-world
 ```
 
 ### Example workflow with cache
@@ -71,7 +71,7 @@ steps:
   - name: Install the Hello World binary using tool-cache
     uses: AnimMouse/tool-cache@v1
     with:
-      folder_name: hello-world-program
+      folder_name: hello-world
       cache_hit: ${{ steps.cache.outputs.cache-hit }}
       
   - name: Save Hello World cache
