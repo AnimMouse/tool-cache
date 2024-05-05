@@ -5,6 +5,11 @@ on:
       - action.yml
       - scripts/**
       - .github/workflows/test.yaml
+  pull_request:
+    paths:
+      - action.yml
+      - scripts/**
+      - .github/workflows/test.yaml
       
 jobs:
   test:
@@ -23,7 +28,7 @@ jobs:
       - name: Restore Hello World cache
         if: matrix.cache == 'cache' && matrix.cache-hit == 'cache-hit'
         id: cache
-        uses: actions/cache/restore@v3
+        uses: actions/cache/restore@v4
         with:
           path: ${{ runner.tool_cache }}/hello-world
           key: hello-world-${{ runner.os }}-${{ matrix.cache-hit }}
@@ -50,12 +55,12 @@ jobs:
           folder_name: hello-world
           cache_hit: ${{ steps.cache.outputs.cache-hit }}
           
-      - name: Test if Hello World binary is installed by tool-cache
+      - name: Test if the Hello World binary is installed by tool-cache
         run: hello
         
       - name: Save Hello World cache
         if: matrix.cache == 'cache' && ! steps.cache.outputs.cache-hit
-        uses: actions/cache/save@v3
+        uses: actions/cache/save@v4
         with:
           path: ${{ runner.tool_cache }}/hello-world
           key: hello-world-${{ runner.os }}-${{ matrix.cache-hit }}
