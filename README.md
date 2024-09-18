@@ -47,7 +47,7 @@ steps:
 steps:
   - name: Restore Hello World cache
     id: cache
-    uses: actions/cache/restore@v3
+    uses: actions/cache/restore@v4
     with:
       path: ${{ runner.tool_cache }}/hello-world
       key: hello-world-${{ runner.os }}
@@ -76,7 +76,7 @@ steps:
       
   - name: Save Hello World cache
     if: '! steps.cache.outputs.cache-hit'
-    uses: actions/cache/save@v3
+    uses: actions/cache/save@v4
     with:
       path: ${{ runner.tool_cache }}/hello-world
       key: hello-world-${{ runner.os }}

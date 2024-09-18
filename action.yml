@@ -5,37 +5,37 @@ branding:
   color: purple
 inputs:
   folder_name:
-    description: Folder name of the software inside runner temp
+    description: Folder name of the program inside runner temp
     required: true
   cache_hit:
-    description: Boolean value if cache was found
+    description: If set to true, will not install the program since it is already installed by cache
     default: false
     
 runs:
   using: composite
   steps:
-    - name: Install software to tool cache (Unix-like)
+    - name: Install program to tool cache (Unix-like)
       if: (runner.os == 'Linux' || runner.os == 'macOS') && inputs.cache_hit != 'true'
       shell: bash
       run: $GITHUB_ACTION_PATH/scripts/install/Unix-like.sh
       env:
         folder_name: ${{ inputs.folder_name }}
         
-    - name: Add software tool cache folder to path (Unix-like)
+    - name: Add program tool cache folder to path (Unix-like)
       if: runner.os == 'Linux' || runner.os == 'macOS'
       shell: bash
       run: $GITHUB_ACTION_PATH/scripts/add-to-path/Unix-like.sh
       env:
         folder_name: ${{ inputs.folder_name }}
         
-    - name: Install software to tool cache (Windows)
+    - name: Install program to tool cache (Windows)
       if: runner.os == 'Windows' && inputs.cache_hit != 'true'
       shell: pwsh
       run: '& $env:GITHUB_ACTION_PATH\scripts\install\Windows.ps1'
       env:
         folder_name: ${{ inputs.folder_name }}
         
-    - name: Add software tool cache folder to path (Windows)
+    - name: Add program tool cache folder to path (Windows)
       if: runner.os == 'Windows'
       shell: pwsh
       run: '& $env:GITHUB_ACTION_PATH\scripts\add-to-path\Windows.ps1'
