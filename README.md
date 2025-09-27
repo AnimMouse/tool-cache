@@ -94,6 +94,7 @@ You can also check actions that uses this tool cache.
 6. [AnimMouse/setup-appimage](https://github.com/AnimMouse/setup-appimage)
 7. [AnimMouse/setup-ffmpeg](https://github.com/AnimMouse/setup-ffmpeg)
 8. [AnimMouse/setup-age](https://github.com/AnimMouse/setup-age)
+9. [AnimMouse/setup-p7zip-fork](https://github.com/AnimMouse/setup-p7zip-fork)
 
 ### Similar actions
 1. [supplypike/setup-bin](https://github.com/supplypike/setup-bin)
