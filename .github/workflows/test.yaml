@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - action.yml
+      - action.yaml
       - scripts/**
       - .github/workflows/test.yaml
   schedule:
@@ -28,7 +28,7 @@ jobs:
       - name: Restore Hello World cache
         if: matrix.cache == 'cache' && matrix.cache-hit == 'cache-hit'
         id: cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: ${{ runner.tool_cache }}/hello-world
           key: hello-world-${{ runner.os }}-${{ matrix.cache-hit }}
@@ -60,7 +60,7 @@ jobs:
         
       - name: Save Hello World cache
         if: matrix.cache == 'cache' && ! steps.cache.outputs.cache-hit
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: ${{ runner.tool_cache }}/hello-world
           key: hello-world-${{ runner.os }}-${{ matrix.cache-hit }}
