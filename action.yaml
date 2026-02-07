@@ -9,7 +9,6 @@ inputs:
     required: true
   cache_hit:
     description: If set to true, will not install the program since it is already installed by cache
-    default: false
     
 runs:
   using: composite
